@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}View Transactions{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h1>View Transactions</h1>
+    <form id="bank-selection-form" class="row g-3 mb-5">
+        <div class="form-group col-auto">
+            <select class="form-select" id="bank_account" name="bank_account">
+                {% for bank in banks %}
+                    <option value="{{ bank.id }}" {% if bank.id == selected_bank.id %}selected{% endif %}>{{ bank.bank_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group col-auto">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+    {% if selected_bank %}
+        <h2>{{ selected_bank.bank_name }}</h2>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Current Balance</th>
+                    <td>&#8377;{{ selected_bank.current_balance }}</td>
+                </tr>
+                <tr>
+                    <th>Last Updated On</th>
+                    <td>{{ selected_bank.updated_on|date:"d/F/Y" }}</td>
+                </tr>
+            </tbody>
+        </table>
+    {% endif %}
+    <div id="transaction-list" class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>S. No.</th>
+                    <th>Transaction Date</th>
+                    <th>Transaction Details</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ transaction.transaction_date|date:"d/F/Y" }}</td>
+                    <td>{{ transaction.transaction_details }}</td>
+                    <td class="text-{% if transaction.transaction_type == 'debit' %}danger{% else %}success{% endif %}">
+                        {% if transaction.transaction_type == 'debit' %}-{% endif %} &#8377;{{ transaction.amount }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    document.getElementById('bank-selection-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const selectedBankId = document.getElementById('bank_account').value;
+        const selectedBankName = document.querySelector(`option[value="${selectedBankId}"]`).text;
+
+        window.location.href = `{% url 'view_transaction' %}?bank_name=${selectedBankName}`;
+    });
+</script>
+
+{% endblock content %}
