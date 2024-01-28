@@ -12,12 +12,5 @@ class TransactionLabelDAO:
         except TransactionLabel.DoesNotExist:
             return self.create_label(label_name)
 
-    def get_transactions_for_label(self, label_name: str) -> TransactionLabel:
-        label = TransactionLabel.objects.get(label_name=label_name)
-        return label.transaction_set.all().order_by('-transaction_date')
-
-    def get_all_labels(self):
+    def get_all_labels(self) -> list:
         return TransactionLabel.objects.order_by('label_name')
-
-    def get_label_info_by_name(self, label_name: str) -> TransactionLabel:
-        return TransactionLabel.objects.get(label_name=label_name)

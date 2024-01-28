@@ -2,3 +2,6 @@ db*
 .idea
 venv
 */migrations
+*.pem
+*.txt
+run_aws.sh

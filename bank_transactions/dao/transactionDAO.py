@@ -25,7 +25,7 @@ class TransactionDAO:
             label=label
         )
 
-    def get_transactions_by_bank_and_type(self, bank_id, transaction_type=None):
+    def get_transactions_by_bank_and_type(self, bank_id, transaction_type=None) -> list:
         bank_account = bank_account_dao.get_bank_account_by_id(bank_id)
         queryset = Transaction.objects.filter(bank=bank_account)
         if transaction_type:
