@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from .prod_config import PROD_CONFIG, PROD_DB_CONFIG
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1bqz*03p^v+h-3ia)n^xr#_bi9a4k462y=&p*5q^isi4&go*ym'
@@ -49,7 +50,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'personal_finance_management.wsgi.application'
 
-DATABASES = {
+DATABASES = PROD_DB_CONFIG if PROD_CONFIG else {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
