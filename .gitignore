@@ -3,6 +3,5 @@ db*
 venv
 */migrations
 *.pem
-*.txt
 run_aws.sh
 personal_finance_management/prod_config.py
